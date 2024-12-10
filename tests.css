@@ -1,0 +1,24 @@
+@import 'mocha/mocha.css';
+
+#mocha {
+  font-family: system-ui, sans-serif !important;
+}
+
+#mocha h1 {
+  font-weight: 400 !important;
+}
+
+.passes::after {
+  content: "😀"
+}
+
+.failures::after {
+  content: "😢"
+}
+
+canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+}
