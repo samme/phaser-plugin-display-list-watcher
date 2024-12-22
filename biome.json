@@ -22,7 +22,8 @@
     "rules": {
       "recommended": true,
       "correctness": {
-        "noUndeclaredVariables": "error"
+        "noUndeclaredVariables": "error",
+        "noUnusedVariables": "error"
       },
       "style": {
         "noParameterAssign": "off"
