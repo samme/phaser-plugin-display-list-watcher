@@ -43,7 +43,7 @@ Install
 
 ```js
 // In preload():
-this.load.scenePlugin('DisplayListWatcher', 'https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.0.1')
+this.load.scenePlugin('DisplayListWatcher', 'https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.0.2')
 ```
 
 ### Module
@@ -70,7 +70,7 @@ new Phaser.Game({
 
 ```html
 <!-- after phaser.js -->
-<script src="https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.0.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.0.2"></script>
 ```
 
 ```js
