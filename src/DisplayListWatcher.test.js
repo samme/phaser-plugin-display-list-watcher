@@ -38,14 +38,7 @@ vi.mock('phaser', () => {
   return {
     default: {
       Plugins: {
-        ScenePlugin: class {
-          constructor(scene, pluginManager) {
-            this.pluginManager = pluginManager
-            this.game = pluginManager.game
-            this.scene = scene
-            this.systems = scene.sys
-          }
-        }
+        ScenePlugin: ScenePlugin
       },
       Textures: {
         Events: {
