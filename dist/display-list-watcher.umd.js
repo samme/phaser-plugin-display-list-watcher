@@ -94,24 +94,23 @@
       this.toggleKey = null;
     }
     boot() {
-      const { textures } = this.systems;
+      const { cache, events, settings, textures } = this.systems;
       if (!hasPendingFontImage && !textures.exists(fontTextureKey)) {
         hasPendingFontImage = true;
         textures.addBase64(fontKey, fontImage);
       }
       textures.once(`${TextureEvents.ADD_KEY}${fontTextureKey}`, () => {
-        this.systems.cache.bitmapFont.add(
-          fontKey,
-          ParseRetroFont(this.scene, fontData)
-        );
+        cache.bitmapFont.add(fontKey, ParseRetroFont(this.scene, fontData));
       });
-      if (this.systems.settings.key === "__SYSTEM") {
+      if (settings.key === "__SYSTEM") {
         return;
       }
-      const events = this.systems.events;
       events.on(SceneEvents.START, this.start, this);
       events.on(SceneEvents.SHUTDOWN, this.stop, this);
       events.on(SceneEvents.DESTROY, this.destroy, this);
+      if (settings.isBooted) {
+        this.start();
+      }
     }
     startIfFontWasAdded(cache, key) {
       if (key !== fontKey) {
