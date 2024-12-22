@@ -114,22 +114,22 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     this.hideKey = keyboard.addKey('C')
     this.resetKey = keyboard.addKey('V')
 
-    this.toggleKey.on('down', (key, event) => {
+    this.toggleKey.on('down', (_key, event) => {
       if (event.shiftKey) {
         this.toggle()
       }
     })
-    this.showKey.on('down', (key, event) => {
+    this.showKey.on('down', (_key, event) => {
       if (event.shiftKey) {
         this.show()
       }
     })
-    this.hideKey.on('down', (key, event) => {
+    this.hideKey.on('down', (_key, event) => {
       if (event.shiftKey) {
         this.hide()
       }
     })
-    this.resetKey.on('down', (key, event) => {
+    this.resetKey.on('down', (_key, event) => {
       if (event.shiftKey) {
         this.resetCamera()
       }
@@ -190,7 +190,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     this.toggleKey = null
   }
 
-  update(time, delta) {
+  update(_time, delta) {
     if (this.modKey.isDown) {
       this.controls.update(delta)
     }
