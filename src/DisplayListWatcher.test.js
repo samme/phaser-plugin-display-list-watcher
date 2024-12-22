@@ -43,37 +43,7 @@ vi.mock('phaser', () => {
             this.pluginManager = pluginManager
             this.game = pluginManager.game
             this.scene = scene
-            this.systems = {
-              cache: {
-                bitmapFont: {
-                  events: new EventEmitter(),
-                  add: vi.fn(),
-                  exists: vi.fn().mockReturnValue(true)
-                }
-              },
-              events: new EventEmitter(),
-              input: {
-                keyboard: Object.assign(new EventEmitter(), {
-                  addKey: vi.fn(() => new EventEmitter()),
-                  removeKey: vi.fn().mockReturnThis()
-                })
-              },
-              make: {
-                bitmapText: vi.fn(() => ({
-                  destroy: vi.fn(),
-                  renderCanvas: vi.fn(),
-                  renderWebGL: vi.fn(),
-                  setText: vi.fn().mockReturnThis()
-                }))
-              },
-              renderer: { type: Phaser.WEBGL },
-              scale: { width: 1024, height: 768 },
-              settings: { key: 'testScene' },
-              textures: Object.assign(new EventEmitter(), {
-                addBase64: vi.fn().mockReturnThis(),
-                exists: vi.fn().mockReturnValue(true)
-              })
-            }
+            this.systems = scene.sys
           }
         }
       },
@@ -145,16 +115,35 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
     game.plugins = pluginManager
     scene = {
       sys: {
-        events: new EventEmitter(),
-        input: { keyboard: { addKey: () => new EventEmitter() } },
-        make: {
-          bitmapText: () => {
-            return { setText: vi.fn().mockReturnThis(), destroy: vi.fn() }
+        cache: {
+          bitmapFont: {
+            events: new EventEmitter(),
+            add: vi.fn(),
+            exists: vi.fn().mockReturnValue(true)
           }
         },
-        renderer: { type: 2 },
+        events: new EventEmitter(),
+        input: {
+          keyboard: Object.assign(new EventEmitter(), {
+            addKey: vi.fn(() => new EventEmitter()),
+            removeKey: vi.fn().mockReturnThis()
+          })
+        },
+        make: {
+          bitmapText: vi.fn(() => ({
+            destroy: vi.fn(),
+            renderCanvas: vi.fn(),
+            renderWebGL: vi.fn(),
+            setText: vi.fn().mockReturnThis()
+          }))
+        },
+        renderer: { type: Phaser.WEBGL },
         scale: { width: 1024, height: 768 },
-        settings: { key: 'default' }
+        settings: { key: 'testScene', isBooted: false },
+        textures: Object.assign(new EventEmitter(), {
+          addBase64: vi.fn().mockReturnThis(),
+          exists: vi.fn().mockReturnValue(true)
+        })
       }
     }
 
@@ -287,6 +276,30 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
     plugin.stop()
 
     plugin.destroy()
+  })
+
+  test('boot() calls start() if the scene has already booted', () => {
+    const plugin = new DisplayListWatcher(scene, pluginManager)
+    const startSpy = vi.spyOn(plugin, 'start')
+
+    scene.sys.settings.key = 'bootedScene'
+    scene.sys.settings.isBooted = true
+
+    plugin.boot()
+
+    expect(startSpy).toHaveBeenCalledTimes(1)
+  })
+
+  test('boot() does not call start() if the scene has not booted', () => {
+    const plugin = new DisplayListWatcher(scene, pluginManager)
+    const startSpy = vi.spyOn(plugin, 'start')
+
+    scene.sys.settings.key = 'unbootedScene'
+    scene.sys.settings.isBooted = false
+
+    plugin.boot()
+
+    expect(startSpy).not.toHaveBeenCalled()
   })
 
   test('after boot(), scene START event causes plugin start()', () => {

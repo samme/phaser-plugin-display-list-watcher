@@ -60,6 +60,12 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     events.on(SceneEvents.START, this.start, this)
     events.on(SceneEvents.SHUTDOWN, this.stop, this)
     events.on(SceneEvents.DESTROY, this.destroy, this)
+
+    console.debug('isBooted', this.systems.settings.isBooted)
+
+    if (this.systems.settings.isBooted) {
+      this.start()
+    }
   }
 
   startIfFontWasAdded(cache, key) {
