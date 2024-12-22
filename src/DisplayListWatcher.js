@@ -28,9 +28,9 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
   }
 
   boot() {
-    console.debug('boot', this.systems.settings.key)
+    const { cache, events, settings, textures } = this.systems
 
-    const { textures } = this.systems
+    console.debug('boot', settings.key)
 
     if (!hasPendingFontImage && !textures.exists(fontTextureKey)) {
       hasPendingFontImage = true
@@ -43,27 +43,22 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     textures.once(`${TextureEvents.ADD_KEY}${fontTextureKey}`, () => {
       console.debug('add bitmapFont', fontKey, fontData)
 
-      this.systems.cache.bitmapFont.add(
-        fontKey,
-        ParseRetroFont(this.scene, fontData)
-      )
+      cache.bitmapFont.add(fontKey, ParseRetroFont(this.scene, fontData))
     })
 
-    if (this.systems.settings.key === '__SYSTEM') {
+    if (settings.key === '__SYSTEM') {
       console.debug('leave system scene')
 
       return
     }
 
-    const events = this.systems.events
-
     events.on(SceneEvents.START, this.start, this)
     events.on(SceneEvents.SHUTDOWN, this.stop, this)
     events.on(SceneEvents.DESTROY, this.destroy, this)
 
-    console.debug('isBooted', this.systems.settings.isBooted)
+    console.debug('isBooted', settings.isBooted)
 
-    if (this.systems.settings.isBooted) {
+    if (settings.isBooted) {
       this.start()
     }
   }
