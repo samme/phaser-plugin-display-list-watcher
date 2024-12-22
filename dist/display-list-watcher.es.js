@@ -146,22 +146,22 @@ class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     this.showKey = keyboard.addKey("X");
     this.hideKey = keyboard.addKey("C");
     this.resetKey = keyboard.addKey("V");
-    this.toggleKey.on("down", (key, event) => {
+    this.toggleKey.on("down", (_key, event) => {
       if (event.shiftKey) {
         this.toggle();
       }
     });
-    this.showKey.on("down", (key, event) => {
+    this.showKey.on("down", (_key, event) => {
       if (event.shiftKey) {
         this.show();
       }
     });
-    this.hideKey.on("down", (key, event) => {
+    this.hideKey.on("down", (_key, event) => {
       if (event.shiftKey) {
         this.hide();
       }
     });
-    this.resetKey.on("down", (key, event) => {
+    this.resetKey.on("down", (_key, event) => {
       if (event.shiftKey) {
         this.resetCamera();
       }
@@ -201,7 +201,7 @@ class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     this.showKey = null;
     this.toggleKey = null;
   }
-  update(time, delta) {
+  update(_time, delta) {
     if (this.modKey.isDown) {
       this.controls.update(delta);
     }
@@ -210,7 +210,6 @@ class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     if (!this.text.visible) {
       return;
     }
-    const maxLines = 100;
     const { displayList, renderer, scenePlugin, settings } = this.systems;
     const x = 256 * scenePlugin.getIndex(this.scene);
     const y = 0;
@@ -223,11 +222,6 @@ class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
       [],
       0
     );
-    const fullLength = output.length;
-    if (fullLength > maxLines) {
-      output.length = maxLines;
-      output.push(`[ ... ${fullLength - maxLines} more ]`);
-    }
     this.text.setPosition(x, y).setText(output);
     this.camera.preRender();
     this.renderText(renderer, this.text, this.camera);
