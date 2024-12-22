@@ -201,8 +201,6 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
       return
     }
 
-    // TODO
-    const maxLines = 100
     const { displayList, renderer, scenePlugin, settings } = this.systems
     const x = 256 * scenePlugin.getIndex(this.scene)
     const y = 0
@@ -216,16 +214,6 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
       [],
       0
     )
-
-    const fullLength = output.length
-
-    if (fullLength > maxLines) {
-      output.length = maxLines
-
-      output.push(`[ ... ${fullLength - maxLines} more ]`)
-    }
-
-    // const outputStr = output.join('\n').replace(/ {2,}/g, ' ');
 
     this.text.setPosition(x, y).setText(output)
 
