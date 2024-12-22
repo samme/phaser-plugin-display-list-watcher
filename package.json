@@ -1,8 +1,11 @@
 {
   "name": "phaser-plugin-display-list-watcher",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Shows the scene display lists",
-  "keywords": ["phaser", "phaser-plugin"],
+  "keywords": [
+    "phaser",
+    "phaser-plugin"
+  ],
   "author": "samme",
   "license": "MIT",
   "repository": {
