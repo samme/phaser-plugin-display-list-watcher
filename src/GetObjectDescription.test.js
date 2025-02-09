@@ -224,3 +224,49 @@ test('returns correct description with precision 2', () => {
   const result = GetObjectDescription(obj, 2)
   expect(result).toBe('+ Sprite spriteObject (10.12, 20.46) 5.79')
 })
+
+describe('GetObjectDescription', () => {
+  test('returns correct description for SpriteGPULayer', () => {
+    const obj = {
+      type: 'SpriteGPULayer',
+      memberCount: 5,
+      name: 'name',
+      visible: true,
+      x: 10,
+      y: 20,
+      depth: 5
+    }
+    const result = GetObjectDescription(obj)
+    expect(result).toBe('+ SpriteGPULayer name (10.0, 20.0) 5.0 (5)')
+  })
+
+  test('returns correct description for TilemapLayer', () => {
+    const obj = {
+      type: 'TilemapLayer',
+      tilesDrawn: 100,
+      tilesTotal: 200,
+      name: 'name',
+      visible: true,
+      x: 10,
+      y: 20,
+      depth: 5
+    }
+    const result = GetObjectDescription(obj)
+    expect(result).toBe('+ TilemapLayer name (10.0, 20.0) 5.0 (200)')
+  })
+
+  test('returns correct description for TilemapGPULayer', () => {
+    const obj = {
+      type: 'TilemapGPULayer',
+      tilesDrawn: 200,
+      tilesTotal: 400,
+      name: 'name',
+      visible: true,
+      x: 10,
+      y: 20,
+      depth: 5
+    }
+    const result = GetObjectDescription(obj)
+    expect(result).toBe('+ TilemapGPULayer name (10.0, 20.0) 5.0 (400)')
+  })
+})

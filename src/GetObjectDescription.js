@@ -10,6 +10,10 @@ const GetObjectDescription = (obj, precision = 1) => {
     count = obj.children.list.length
   } else if (type === 'ParticleEmitter') {
     count = obj.getParticleCount()
+  } else if (type === 'SpriteGPULayer') {
+    count = obj.memberCount
+  } else if (type === 'TilemapLayer' || type === 'TilemapGPULayer') {
+    count = obj.tilesTotal
   } else if (obj.list) {
     count = obj.list.length
   }
