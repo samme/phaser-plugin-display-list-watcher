@@ -11,8 +11,6 @@ const ParseRetroFont = Phaser.GameObjects.RetroFont.Parse
 const fontTextureKey = fontData.image
 const fontKey = fontData.image
 
-let hasPendingFontImage = false
-
 export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
   constructor(scene, pluginManager) {
     super(scene, pluginManager)
@@ -32,15 +30,19 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
 
     console.debug('boot', settings.key)
 
-    if (!hasPendingFontImage && !textures.exists(fontTextureKey)) {
-      hasPendingFontImage = true
-
-      console.debug('addBase64', fontKey, fontImage)
-
-      textures.addBase64(fontKey, fontImage)
+    if (!textures.exists(fontTextureKey)) {
+      this.addImage(fontKey, fontImage)
     }
 
     textures.once(`${TextureEvents.ADD_KEY}${fontTextureKey}`, () => {
+      console.debug('font texture added', fontTextureKey)
+
+      if (cache.bitmapFont.has(fontKey)) {
+        console.debug('font already in cache, exit', fontKey)
+
+        return
+      }
+
       console.debug('add bitmapFont', fontKey, fontData)
 
       cache.bitmapFont.add(fontKey, ParseRetroFont(this.scene, fontData))
@@ -63,12 +65,42 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     }
   }
 
-  startIfFontWasAdded(cache, key) {
+  // For Phaser v3.87. Avoids errors from duplicate keys.
+
+  addImage(key, url) {
+    const { textures } = this.systems
+
+    if (textures.exists(key)) {
+      console.debug('texture exists already, exit', key)
+    }
+
+    const image = new Image()
+
+    image.onload = function onload() {
+      image.onload = null
+
+      if (textures.exists(key)) {
+        console.debug('texture exists already, exit', key)
+
+        return
+      }
+
+      console.debug('addImage', key, image)
+
+      textures.addImage(key, image)
+    }
+
+    image.src = url
+
+    console.debug('new image', image)
+  }
+
+  onFontCacheAdded(cache, key) {
     if (key !== fontKey) {
       return
     }
 
-    cache.events.off(CacheEvents.ADD, this.startIfFontWasAdded, this)
+    cache.events.off(CacheEvents.ADD, this.onFontCacheAdded, this)
 
     this.start()
   }
@@ -84,7 +116,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     if (!fontCache.exists(fontKey)) {
       console.debug('abort start, wait for fontCache')
 
-      fontCache.events.on(CacheEvents.ADD, this.startIfFontWasAdded, this)
+      fontCache.events.on(CacheEvents.ADD, this.onFontCacheAdded, this)
 
       return
     }
@@ -153,7 +185,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
 
     console.debug('stop', settings.key, settings.state)
 
-    cache.bitmapFont.events.off(CacheEvents.ADD, this.startIfFontWasAdded, this)
+    cache.bitmapFont.events.off(CacheEvents.ADD, this.onFontCacheAdded, this)
 
     events.off(SceneEvents.UPDATE, this.update, this)
     events.off(SceneEvents.RENDER, this.render, this)
