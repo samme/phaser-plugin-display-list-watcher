@@ -24,9 +24,14 @@ new Phaser.Game({
     ]
   },
   scene: [
-    new Example({ key: 'example1', active: true }),
-    new Example({ key: 'example2', active: true }),
-    new Example({ key: 'example3', active: false }),
-    new Example({ key: 'example4', active: true })
+    new Example({ key: '1 active', active: true }),
+    new Example({ key: '2 active', active: true }),
+    new Example({ key: '3 inactive', active: false }),
+    new Example({ key: '4 active', active: true }),
+    new Example({
+      key: '5 no other plugins',
+      active: true,
+      plugins: ['DisplayListWatcher']
+    })
   ]
 })
