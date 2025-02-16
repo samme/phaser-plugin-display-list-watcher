@@ -31,6 +31,12 @@ class Example extends Phaser.Scene {
     this.add.zone(0, 0, 1, 1)
     this.add.text(0, 0, '👀', { font: '72px sans-serif' }).setName('eyes')
 
+    const tilemap = this.make.tilemap({ data: [[0]] })
+    const tileset = tilemap.addTilesetImage('__DEFAULT')
+
+    tilemap.createLayer(0, tileset)
+    tilemap.createBlankLayer(1, tileset).setName('blank')
+
     for (let i = 0; i < 100 * this.scene.getIndex(this); i++) {
       this.add.zone(i, i)
     }
