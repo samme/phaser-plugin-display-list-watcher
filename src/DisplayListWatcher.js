@@ -1,6 +1,6 @@
 import Phaser from 'phaser'
-import fontData from '/proggy_clean_inv.json'
-import fontImage from '/proggy_clean_inv.png'
+import fontData from './proggy_clean_inv'
+import fontImage from './proggy_clean_inv.png'
 import WalkDisplayListObj from './WalkDisplayListObject'
 
 const { POSITIVE_INFINITY } = Number
