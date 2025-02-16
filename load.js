@@ -18,7 +18,7 @@ context('Phaser', () => {
   })
 })
 
-context('load.scenePlugin("DisplayListWatcher")', () => {
+context('load.scenePlugin()', () => {
   let game
 
   beforeEach((done) => {
@@ -42,7 +42,7 @@ context('load.scenePlugin("DisplayListWatcher")', () => {
     game.destroy(true)
   })
 
-  test('load.scenePlugin("DisplayListWatcher", url) adds the plugin class to the plugin manager', (done) => {
+  test('load.scenePlugin("DisplayListWatcher", "dist/display-list-watcher.umd.js") adds the plugin class to the plugin manager', (done) => {
     const scene = game.scene.systemScene
 
     scene.load
