@@ -116,12 +116,12 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
           }
         },
         events: new EventEmitter(),
-        input: {
+        input: Object.assign(new EventEmitter(), {
           keyboard: Object.assign(new EventEmitter(), {
             addKey: vi.fn(() => new EventEmitter()),
             removeKey: vi.fn().mockReturnThis()
           })
-        },
+        }),
         make: {
           bitmapText: vi.fn(() => ({
             destroy: vi.fn(),
@@ -265,6 +265,46 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
     plugin.update()
     plugin.render()
     plugin.update()
+    plugin.render()
+    plugin.stop()
+
+    plugin.destroy()
+  })
+
+  test('no keyboard: boot, (start, render, stop), destroy', () => {
+    scene.sys.input.keyboard = null
+
+    const plugin = new DisplayListWatcher(scene, pluginManager)
+
+    plugin.boot()
+
+    plugin.start()
+    plugin.render()
+    plugin.render()
+    plugin.stop()
+
+    plugin.start()
+    plugin.render()
+    plugin.render()
+    plugin.stop()
+
+    plugin.destroy()
+  })
+
+  test('no input: boot, (start, render, stop), destroy', () => {
+    scene.sys.input = null
+
+    const plugin = new DisplayListWatcher(scene, pluginManager)
+
+    plugin.boot()
+
+    plugin.start()
+    plugin.render()
+    plugin.render()
+    plugin.stop()
+
+    plugin.start()
+    plugin.render()
     plugin.render()
     plugin.stop()
 
