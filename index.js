@@ -30,6 +30,10 @@ class Example extends Phaser.Scene {
     this.add.particles(0, 0, '__DEFAULT')
     this.add.zone(0, 0, 1, 1)
     this.add.text(0, 0, '👀', { font: '72px sans-serif' }).setName('eyes')
+
+    for (let i = 0; i < 1000; i++) {
+      this.add.zone(2 * i, 2 * i)
+    }
   }
 }
 
