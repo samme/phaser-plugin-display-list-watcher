@@ -7,15 +7,12 @@ vi.mock('phaser', () => {
   const Camera = vi.fn()
 
   Camera.prototype.setBounds = vi.fn().mockReturnThis()
+  Camera.prototype.preRender = vi.fn().mockReturnThis()
   Camera.prototype.destroy = vi.fn()
 
   const FixedKeyControl = vi.fn()
 
   FixedKeyControl.prototype.update = vi.fn()
-
-  console.log('new Camera()', new Camera())
-
-  console.log('new FixedKeyControl()', new FixedKeyControl())
 
   class ScenePlugin {
     constructor(scene, pluginManager) {
@@ -115,6 +112,9 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
             exists: vi.fn().mockReturnValue(true)
           }
         },
+        displayList: {
+          list: []
+        },
         events: new EventEmitter(),
         input: Object.assign(new EventEmitter(), {
           keyboard: Object.assign(new EventEmitter(), {
@@ -124,14 +124,18 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
         }),
         make: {
           bitmapText: vi.fn(() => ({
+            height: 1,
+            visible: true,
             destroy: vi.fn(),
             renderCanvas: vi.fn(),
             renderWebGL: vi.fn(),
+            setPosition: vi.fn().mockReturnThis(),
             setText: vi.fn().mockReturnThis()
           }))
         },
         renderer: { type: Phaser.WEBGL },
         scale: { width: 1024, height: 768 },
+        scenePlugin: { getIndex: () => 0 },
         settings: { key: 'testScene', isBooted: false },
         textures: Object.assign(new EventEmitter(), {
           addBase64: vi.fn().mockReturnThis(),
