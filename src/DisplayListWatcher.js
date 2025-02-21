@@ -218,6 +218,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
 
     this.text.setPosition(x, y).setText(output)
 
+    this.camera.setBounds(0, 0, POSITIVE_INFINITY, this.text.height)
     this.camera.preRender()
 
     this.renderText(renderer, this.text, this.camera)
