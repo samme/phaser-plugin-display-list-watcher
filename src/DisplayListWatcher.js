@@ -6,7 +6,9 @@ import WalkDisplayListObj from './WalkDisplayListObject'
 const { POSITIVE_INFINITY } = Number
 const TextureEvents = Phaser.Textures.Events
 const CacheEvents = Phaser.Cache.Events
+const KeyboardEvents = Phaser.Input.Keyboard.Events
 const SceneEvents = Phaser.Scenes.Events
+const { KeyCodes } = Phaser.Input.Keyboard
 const ParseRetroFont = Phaser.GameObjects.RetroFont.Parse
 const fontTextureKey = fontData.image
 const fontKey = fontData.image
@@ -17,12 +19,8 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
 
     this.camera = null
     this.controls = null
-    this.hideKey = null
     this.modKey = null
-    this.resetKey = null
-    this.showKey = null
     this.text = null
-    this.toggleKey = null
   }
 
   boot() {
@@ -155,11 +153,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     events.off(SceneEvents.RENDER, this.render, this)
 
     if (keyboard) {
-      keyboard.removeKey(this.hideKey, true)
-      keyboard.removeKey(this.modKey, true)
-      keyboard.removeKey(this.resetKey, true)
-      keyboard.removeKey(this.showKey, true)
-      keyboard.removeKey(this.toggleKey, true)
+      keyboard.off(KeyboardEvents.ANY_KEY_DOWN, this.onAnyKeyDown, this)
     }
 
     if (this.camera) {
@@ -181,11 +175,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
 
     this.camera = null
     this.controls = null
-    this.hideKey = null
     this.modKey = null
-    this.resetKey = null
-    this.showKey = null
-    this.toggleKey = null
   }
 
   update(_time, delta) {
@@ -235,44 +225,37 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     this.systems = null
   }
 
+  onAnyKeyDown(event) {
+    console.debug('down', event.code, event.key, event.keyCode)
+
+    if (!this.modKey.isDown) return
+
+    const method = this.keyMap[event.keyCode]
+
+    if (!method) return
+
+    console.debug(event.keyCode, method.name)
+
+    method.call(this)
+
+    console.debug('scrollY', this.camera.scrollY)
+  }
+
   addKeyboardControls(keyboard) {
     this.controls = new Phaser.Cameras.Controls.FixedKeyControl({
       camera: this.camera,
-      up: keyboard.addKey('UP'),
-      down: keyboard.addKey('DOWN'),
-      left: keyboard.addKey('LEFT'),
-      right: keyboard.addKey('RIGHT'),
+      up: keyboard.addKey(KeyCodes.UP),
+      down: keyboard.addKey(KeyCodes.DOWN),
+      left: keyboard.addKey(KeyCodes.LEFT),
+      right: keyboard.addKey(KeyCodes.RIGHT),
       speed: 1
     })
 
-    this.modKey = keyboard.addKey('SHIFT')
-    this.toggleKey = keyboard.addKey('Z')
-    this.showKey = keyboard.addKey('X')
-    this.hideKey = keyboard.addKey('C')
-    this.resetKey = keyboard.addKey('V')
-
-    this.toggleKey.on('down', (_key, event) => {
-      if (event.shiftKey) {
-        this.toggle()
-      }
-    })
-    this.showKey.on('down', (_key, event) => {
-      if (event.shiftKey) {
-        this.show()
-      }
-    })
-    this.hideKey.on('down', (_key, event) => {
-      if (event.shiftKey) {
-        this.hide()
-      }
-    })
-    this.resetKey.on('down', (_key, event) => {
-      if (event.shiftKey) {
-        this.resetCamera()
-      }
-    })
-
     console.debug('controls', this.controls)
+
+    this.modKey = keyboard.addKey(KeyCodes.SHIFT)
+
+    keyboard.on(KeyboardEvents.ANY_KEY_DOWN, this.onAnyKeyDown, this)
   }
 
   hide() {
@@ -290,4 +273,35 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
   resetCamera() {
     this.camera.setScroll(0, 0)
   }
+
+  pageUp() {
+    this.camera.scrollY -= this.camera.height
+  }
+
+  pageDown() {
+    this.camera.scrollY += this.camera.height
+  }
+
+  pageStart() {
+    this.camera.scrollY = 0
+  }
+
+  pageEnd() {
+    this.camera.scrollY = POSITIVE_INFINITY
+  }
 }
+
+const proto = DisplayListWatcher.prototype
+
+proto.keyMap = {
+  [KeyCodes.C]: proto.hide,
+  [KeyCodes.END]: proto.pageEnd,
+  [KeyCodes.HOME]: proto.pageStart,
+  [KeyCodes.PAGE_DOWN]: proto.pageDown,
+  [KeyCodes.PAGE_UP]: proto.pageUp,
+  [KeyCodes.V]: proto.resetCamera,
+  [KeyCodes.X]: proto.show,
+  [KeyCodes.Z]: proto.toggle
+}
+
+console.log(proto.keyMap)

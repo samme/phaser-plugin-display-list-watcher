@@ -69,6 +69,119 @@ vi.mock('phaser', () => {
         Controls: {
           FixedKeyControl: FixedKeyControl
         }
+      },
+      Input: {
+        Keyboard: {
+          Events: {
+            ANY_KEY_DOWN: 'keydown',
+            ANY_KEY_UP: 'keyup',
+            COMBO_MATCH: 'keycombomatch',
+            DOWN: 'down',
+            KEY_DOWN: 'keydown-',
+            KEY_UP: 'keyup-',
+            UP: 'up'
+          },
+          KeyCodes: {
+            A: 65,
+            ALT: 18,
+            B: 66,
+            BACK_SLASH: 220,
+            BACKSPACE: 8,
+            BACKTICK: 192,
+            BRACKET_LEFT_FIREFOX: 175,
+            BRACKET_RIGHT_FIREFOX: 174,
+            C: 67,
+            CAPS_LOCK: 20,
+            CLOSED_BRACKET: 221,
+            COLON: 58,
+            COMMA_FIREFOX_WINDOWS: 60,
+            COMMA_FIREFOX: 62,
+            COMMA: 188,
+            CTRL: 17,
+            D: 68,
+            DELETE: 46,
+            DOWN: 40,
+            E: 69,
+            EIGHT: 56,
+            END: 35,
+            ENTER: 13,
+            ESC: 27,
+            F: 70,
+            F1: 112,
+            F10: 121,
+            F11: 122,
+            F12: 123,
+            F2: 113,
+            F3: 114,
+            F4: 115,
+            F5: 116,
+            F6: 117,
+            F7: 118,
+            F8: 119,
+            F9: 120,
+            FIVE: 53,
+            FORWARD_SLASH: 191,
+            FOUR: 52,
+            G: 71,
+            H: 72,
+            HOME: 36,
+            I: 73,
+            INSERT: 45,
+            J: 74,
+            K: 75,
+            L: 76,
+            LEFT: 37,
+            M: 77,
+            MINUS: 189,
+            N: 78,
+            NINE: 57,
+            NUMPAD_ADD: 107,
+            NUMPAD_EIGHT: 104,
+            NUMPAD_FIVE: 101,
+            NUMPAD_FOUR: 100,
+            NUMPAD_NINE: 105,
+            NUMPAD_ONE: 97,
+            NUMPAD_SEVEN: 103,
+            NUMPAD_SIX: 102,
+            NUMPAD_SUBTRACT: 109,
+            NUMPAD_THREE: 99,
+            NUMPAD_TWO: 98,
+            NUMPAD_ZERO: 96,
+            O: 79,
+            ONE: 49,
+            OPEN_BRACKET: 219,
+            P: 80,
+            PAGE_DOWN: 34,
+            PAGE_UP: 33,
+            PAUSE: 19,
+            PERIOD: 190,
+            PLUS: 187,
+            PRINT_SCREEN: 42,
+            Q: 81,
+            QUOTES: 222,
+            R: 82,
+            RIGHT: 39,
+            S: 83,
+            SEMICOLON_FIREFOX: 59,
+            SEMICOLON: 186,
+            SEVEN: 55,
+            SHIFT: 16,
+            SIX: 54,
+            SPACE: 32,
+            T: 84,
+            TAB: 9,
+            THREE: 51,
+            TWO: 50,
+            U: 85,
+            UP: 38,
+            V: 86,
+            W: 87,
+            X: 88,
+            Y: 89,
+            Z: 90,
+            ZERO: 48
+          }
+        }
       }
     }
   }
@@ -197,39 +310,16 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
     expect(plugin.controls).toBeNull()
   })
 
-  test('hideKey is null', () => {
-    const plugin = new DisplayListWatcher(scene, pluginManager)
-
-    expect(plugin.hideKey).toBeNull()
-  })
-
   test('modKey is null', () => {
     const plugin = new DisplayListWatcher(scene, pluginManager)
 
     expect(plugin.modKey).toBeNull()
   })
 
-  test('resetKey is null', () => {
-    const plugin = new DisplayListWatcher(scene, pluginManager)
-
-    expect(plugin.resetKey).toBeNull()
-  })
-
-  test('showKey is null', () => {
-    const plugin = new DisplayListWatcher(scene, pluginManager)
-
-    expect(plugin.showKey).toBeNull()
-  })
-
   test('text is null', () => {
     const plugin = new DisplayListWatcher(scene, pluginManager)
 
     expect(plugin.text).toBeNull()
-  })
-
-  test('toggleKey is null', () => {
-    const plugin = new DisplayListWatcher(scene, pluginManager)
-    expect(plugin.toggleKey).toBeNull()
   })
 
   test('boot and destroy', () => {
@@ -240,12 +330,8 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
 
     expect(plugin.camera).toBeNull()
     expect(plugin.controls).toBeNull()
-    expect(plugin.hideKey).toBeNull()
     expect(plugin.modKey).toBeNull()
-    expect(plugin.resetKey).toBeNull()
-    expect(plugin.showKey).toBeNull()
     expect(plugin.text).toBeNull()
-    expect(plugin.toggleKey).toBeNull()
 
     expect(plugin.scene).toBeNull()
     expect(plugin.systems).toBeNull()
