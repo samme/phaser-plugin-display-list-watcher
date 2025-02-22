@@ -123,12 +123,9 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
 
     events.on(SceneEvents.RENDER, this.render, this)
 
-    this.camera = new Phaser.Cameras.Scene2D.Camera(
-      0,
-      0,
-      width,
-      height
-    ).setBounds(0, 0, POSITIVE_INFINITY, POSITIVE_INFINITY)
+    this.camera = new Phaser.Cameras.Scene2D.Camera(0, 0, width, height)
+      .setBounds(0, 0, POSITIVE_INFINITY, POSITIVE_INFINITY)
+      .setRoundPixels(true)
 
     if (keyboard) {
       events.on(SceneEvents.UPDATE, this.update, this)
