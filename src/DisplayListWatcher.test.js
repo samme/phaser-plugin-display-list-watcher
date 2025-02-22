@@ -390,4 +390,55 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
 
     expect(renderSpy).toHaveBeenCalledTimes(1)
   })
+
+  test('after boot(), start(), stop(), scene UPDATE event does not cause plugin update()', () => {
+    const plugin = new DisplayListWatcher(scene, pluginManager)
+    const updateSpy = vi.spyOn(plugin, 'update')
+
+    plugin.boot()
+    plugin.start()
+    plugin.stop()
+    plugin.systems.events.emit(Phaser.Scenes.Events.UPDATE)
+
+    expect(updateSpy).not.toHaveBeenCalled()
+  })
+
+  test('after boot(), start(), stop(), scene RENDER event does not cause plugin render()', () => {
+    const plugin = new DisplayListWatcher(scene, pluginManager)
+    const renderSpy = vi.spyOn(plugin, 'render')
+
+    plugin.boot()
+    plugin.start()
+    plugin.stop()
+    plugin.systems.events.emit(Phaser.Scenes.Events.RENDER)
+
+    expect(renderSpy).not.toHaveBeenCalled()
+  })
+
+  test('after boot() and destroy(), scene START event does not cause plugin start()', () => {
+    const plugin = new DisplayListWatcher(scene, pluginManager)
+    const startSpy = vi.spyOn(plugin, 'start')
+
+    plugin.boot()
+    plugin.destroy()
+
+    scene.sys.events.emit(Phaser.Scenes.Events.START)
+
+    expect(startSpy).not.toHaveBeenCalled()
+  })
+
+  test('after boot() and destroy(), scene SHUTDOWN event does not cause plugin stop()', () => {
+    const plugin = new DisplayListWatcher(scene, pluginManager)
+    const stopSpy = vi.spyOn(plugin, 'stop')
+
+    plugin.boot()
+    plugin.destroy()
+
+    // stop() is called once by destroy() already.
+    expect(stopSpy).toHaveBeenCalledOnce()
+
+    scene.sys.events.emit(Phaser.Scenes.Events.SHUTDOWN)
+
+    expect(stopSpy).toHaveBeenCalledOnce()
+  })
 })
