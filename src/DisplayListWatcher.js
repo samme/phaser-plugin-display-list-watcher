@@ -225,8 +225,12 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
   }
 
   destroy() {
-    // TODO
     this.stop()
+
+    this.systems.events
+      .off(SceneEvents.START, this.start, this)
+      .off(SceneEvents.SHUTDOWN, this.stop, this)
+      .off(SceneEvents.DESTROY, this.destroy, this)
 
     this.pluginManager = null
     this.game = null
