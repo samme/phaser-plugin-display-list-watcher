@@ -7,6 +7,7 @@ vi.mock('phaser', () => {
   const Camera = vi.fn()
 
   Camera.prototype.setBounds = vi.fn().mockReturnThis()
+  Camera.prototype.setRoundPixels = vi.fn().mockReturnThis()
   Camera.prototype.preRender = vi.fn().mockReturnThis()
   Camera.prototype.destroy = vi.fn()
 
