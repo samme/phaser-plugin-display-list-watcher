@@ -226,8 +226,6 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
   }
 
   onAnyKeyDown(event) {
-    console.debug('down', event.code, event.key, event.keyCode)
-
     if (!this.modKey.isDown) return
 
     const method = this.keyMap[event.keyCode]
@@ -237,8 +235,6 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     console.debug(event.keyCode, method.name)
 
     method.call(this)
-
-    console.debug('scrollY', this.camera.scrollY)
   }
 
   addKeyboardControls(keyboard) {
