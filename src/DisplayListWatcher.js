@@ -56,7 +56,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     events.on(SceneEvents.SHUTDOWN, this.stop, this)
     events.on(SceneEvents.DESTROY, this.destroy, this)
 
-    console.debug('isBooted', settings.isBooted)
+    console.debug('scene isBooted', settings.isBooted)
 
     if (settings.isBooted) {
       this.start()
@@ -145,7 +145,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     const { cache, events, input, settings } = this.systems
     const keyboard = input?.keyboard
 
-    console.debug('stop', settings.key, settings.state)
+    console.debug('stop', settings.key, settings.status)
 
     cache.bitmapFont.events.off(CacheEvents.ADD, this.onFontCacheAdded, this)
 
@@ -247,8 +247,6 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
       speed: 1
     })
 
-    console.debug('controls', this.controls)
-
     this.modKey = keyboard.addKey(KeyCodes.SHIFT)
 
     keyboard.on(KeyboardEvents.ANY_KEY_DOWN, this.onAnyKeyDown, this)
@@ -300,4 +298,4 @@ proto.keyMap = {
   [KeyCodes.Z]: proto.toggle
 }
 
-console.log(proto.keyMap)
+console.debug('keyMap', proto.keyMap)
