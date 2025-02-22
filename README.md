@@ -17,13 +17,17 @@ Display
 Keyboard Controls
 -----------------
 
-| Key Combination                          | Action                  |
-|------------------------------------------|-------------------------|
-| <kbd>shift</kbd> + <kbd>left</kbd>, <kbd>right</kbd>, <kbd>up</kbd>, <kbd>down</kbd> | Scroll the display      |
-| <kbd>shift</kbd> + <kbd>Z</kbd>          | Toggle display on/off   |
-| <kbd>shift</kbd> + <kbd>X</kbd>          | Show display            |
-| <kbd>shift</kbd> + <kbd>C</kbd>          | Hide display            |
-| <kbd>shift</kbd> + <kbd>V</kbd>          | Reset scroll            |
+| Key Combination                                                   | Action                |
+|-------------------------------------------------------------------|-----------------------|
+| <kbd>shift</kbd> + <kbd>left</kbd>, <kbd>right</kbd>, <kbd>up</kbd>, <kbd>down</kbd> | Scroll the display    |
+| <kbd>shift</kbd> + <kbd>pageup</kbd>                              | Scroll page up        |
+| <kbd>shift</kbd> + <kbd>pagedown</kbd>                            | Scroll page down      |
+| <kbd>shift</kbd> + <kbd>home</kbd>                                | Scroll to start       |
+| <kbd>shift</kbd> + <kbd>end</kbd>                                 | Scroll to end         |
+| <kbd>shift</kbd> + <kbd>Z</kbd>                                   | Toggle display on/off |
+| <kbd>shift</kbd> + <kbd>X</kbd>                                   | Show display          |
+| <kbd>shift</kbd> + <kbd>C</kbd>                                   | Hide display          |
+| <kbd>shift</kbd> + <kbd>V</kbd>                                   | Reset scroll          |
 
 Multiple Scenes
 ---------------
@@ -43,7 +47,7 @@ Install
 
 ```js
 // In preload():
-this.load.scenePlugin('DisplayListWatcher', 'https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.0.2')
+this.load.scenePlugin('DisplayListWatcher', 'https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.1.0')
 ```
 
 ### Module
@@ -64,13 +68,13 @@ new Phaser.Game({
 })
 ```
 
-### UMD / script tag
+### Script tags / UMD
 
 - [Script tag example](https://codepen.io/samme/pen/EaYmBwp)
 
 ```html
 <!-- after phaser.js -->
-<script src="https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.0.2"></script>
+<script src="https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.1.0"></script>
 ```
 
 ```js
