@@ -21,6 +21,10 @@
       count = obj.children.list.length;
     } else if (type === "ParticleEmitter") {
       count = obj.getParticleCount();
+    } else if (type === "SpriteGPULayer") {
+      count = obj.memberCount;
+    } else if (type === "TilemapLayer" || type === "TilemapGPULayer") {
+      count = obj.tilesTotal;
     } else if (obj.list) {
       count = obj.list.length;
     }
@@ -69,6 +73,7 @@
   const { POSITIVE_INFINITY } = Number;
   const TextureEvents = Phaser.Textures.Events;
   const CacheEvents = Phaser.Cache.Events;
+  const CoreEvents = Phaser.Core.Events;
   const KeyboardEvents = Phaser.Input.Keyboard.Events;
   const SceneEvents = Phaser.Scenes.Events;
   const { KeyCodes } = Phaser.Input.Keyboard;
@@ -127,6 +132,7 @@
       this.start();
     }
     start() {
+      const { game } = this;
       const { cache, events, input, make, renderer } = this.systems;
       const fontCache = cache.bitmapFont;
       const keyboard = input == null ? void 0 : input.keyboard;
@@ -135,7 +141,7 @@
         fontCache.events.on(CacheEvents.ADD, this.onFontCacheAdded, this);
         return;
       }
-      events.on(SceneEvents.RENDER, this.render, this);
+      game.events.on(CoreEvents.POST_RENDER, this.render, this);
       this.camera = new Phaser.Cameras.Scene2D.Camera(0, 0, width, height).setBounds(0, 0, POSITIVE_INFINITY, POSITIVE_INFINITY).setRoundPixels(true);
       if (keyboard) {
         events.on(SceneEvents.UPDATE, this.update, this);
@@ -145,11 +151,12 @@
       this.renderText = renderer.type === Phaser.WEBGL ? this.text.renderWebGL : this.text.renderCanvas;
     }
     stop() {
+      const { game } = this;
       const { cache, events, input, settings } = this.systems;
       const keyboard = input == null ? void 0 : input.keyboard;
       cache.bitmapFont.events.off(CacheEvents.ADD, this.onFontCacheAdded, this);
       events.off(SceneEvents.UPDATE, this.update, this);
-      events.off(SceneEvents.RENDER, this.render, this);
+      game.events.off(CoreEvents.POST_RENDER, this.render, this);
       if (keyboard) {
         keyboard.off(KeyboardEvents.ANY_KEY_DOWN, this.onAnyKeyDown, this);
       }
