@@ -6,6 +6,7 @@ import WalkDisplayListObj from './WalkDisplayListObject'
 const { POSITIVE_INFINITY } = Number
 const TextureEvents = Phaser.Textures.Events
 const CacheEvents = Phaser.Cache.Events
+const CoreEvents = Phaser.Core.Events
 const KeyboardEvents = Phaser.Input.Keyboard.Events
 const SceneEvents = Phaser.Scenes.Events
 const { KeyCodes } = Phaser.Input.Keyboard
@@ -104,6 +105,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
   }
 
   start() {
+    const { game } = this
     const { cache, events, input, make, renderer } = this.systems
     const fontCache = cache.bitmapFont
     const keyboard = input?.keyboard
@@ -119,7 +121,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
       return
     }
 
-    events.on(SceneEvents.RENDER, this.render, this)
+    game.events.on(CoreEvents.POST_RENDER, this.render, this)
 
     this.camera = new Phaser.Cameras.Scene2D.Camera(0, 0, width, height)
       .setBounds(0, 0, POSITIVE_INFINITY, POSITIVE_INFINITY)
@@ -142,6 +144,7 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
   }
 
   stop() {
+    const { game } = this
     const { cache, events, input, settings } = this.systems
     const keyboard = input?.keyboard
 
@@ -150,7 +153,8 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     cache.bitmapFont.events.off(CacheEvents.ADD, this.onFontCacheAdded, this)
 
     events.off(SceneEvents.UPDATE, this.update, this)
-    events.off(SceneEvents.RENDER, this.render, this)
+
+    game.events.off(CoreEvents.POST_RENDER, this.render, this)
 
     if (keyboard) {
       keyboard.off(KeyboardEvents.ANY_KEY_DOWN, this.onAnyKeyDown, this)

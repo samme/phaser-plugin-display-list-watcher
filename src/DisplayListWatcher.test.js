@@ -48,6 +48,11 @@ vi.mock('phaser', () => {
           ADD: 'add'
         }
       },
+      Core: {
+        Events: {
+          POST_RENDER: 'postrender'
+        }
+      },
       Scenes: {
         Events: {
           BOOT: 'boot',
@@ -214,7 +219,7 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
   let pluginManager
 
   beforeEach(() => {
-    game = { plugins: null }
+    game = { events: new EventEmitter(), plugins: null }
     pluginManager = { game }
     game.plugins = pluginManager
     scene = {
@@ -467,13 +472,14 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
     expect(updateSpy).toHaveBeenCalledTimes(1)
   })
 
-  test('after boot() and start(), scene RENDER event causes plugin render()', () => {
+  test('after boot() and start(), game POST_RENDER event causes plugin render()', () => {
     const plugin = new DisplayListWatcher(scene, pluginManager)
     const renderSpy = vi.spyOn(plugin, 'render')
 
     plugin.boot()
     plugin.start()
-    plugin.systems.events.emit(Phaser.Scenes.Events.RENDER)
+
+    game.events.emit(Phaser.Core.Events.POST_RENDER)
 
     expect(renderSpy).toHaveBeenCalledTimes(1)
   })
@@ -490,14 +496,15 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
     expect(updateSpy).not.toHaveBeenCalled()
   })
 
-  test('after boot(), start(), stop(), scene RENDER event does not cause plugin render()', () => {
+  test('after boot(), start(), stop(), game POST_RENDER event does not cause plugin render()', () => {
     const plugin = new DisplayListWatcher(scene, pluginManager)
     const renderSpy = vi.spyOn(plugin, 'render')
 
     plugin.boot()
     plugin.start()
     plugin.stop()
-    plugin.systems.events.emit(Phaser.Scenes.Events.RENDER)
+
+    game.events.emit(Phaser.Core.Events.POST_RENDER)
 
     expect(renderSpy).not.toHaveBeenCalled()
   })
