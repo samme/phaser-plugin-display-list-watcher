@@ -252,7 +252,7 @@ describe('new DisplayListWatcher(scene, pluginManager)', () => {
             setText: vi.fn().mockReturnThis()
           }))
         },
-        renderer: { type: Phaser.WEBGL },
+        renderer: { type: Phaser.WEBGL, flush: vi.fn() },
         scale: { width: 1024, height: 768 },
         scenePlugin: { getIndex: () => 0 },
         settings: { key: 'testScene', isBooted: false },

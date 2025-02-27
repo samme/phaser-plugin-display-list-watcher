@@ -213,6 +213,10 @@ export class DisplayListWatcher extends Phaser.Plugins.ScenePlugin {
     this.camera.preRender()
 
     this.renderText(renderer, this.text, this.camera)
+
+    if (renderer.type === Phaser.WEBGL) {
+      renderer.flush()
+    }
   }
 
   destroy() {
