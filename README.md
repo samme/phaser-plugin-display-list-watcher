@@ -8,18 +8,20 @@ Shows the scene display lists.
 Display
 -------
 
-    ± type name (x, y) depth (children) 
+    ± type name (x, y) depth (count) 
 
 `+` is visible; `-` is invisible.
 
 `x`, `y`, and `depth` are rounded to the nearest 0.1.
+
+`count` is the number of children (Blitter, Container, Layer) or tiles (TilemapLayer).
 
 Keyboard Controls
 -----------------
 
 | Key Combination                                                   | Action                |
 |-------------------------------------------------------------------|-----------------------|
-| <kbd>shift</kbd> + <kbd>left</kbd>, <kbd>right</kbd>, <kbd>up</kbd>, <kbd>down</kbd> | Scroll the display    |
+| <kbd>shift</kbd> + <kbd>left</kbd>, <kbd>right</kbd>, <kbd>up</kbd>, <kbd>down</kbd> | Scroll the display |
 | <kbd>shift</kbd> + <kbd>pageup</kbd>                              | Scroll page up        |
 | <kbd>shift</kbd> + <kbd>pagedown</kbd>                            | Scroll page down      |
 | <kbd>shift</kbd> + <kbd>home</kbd>                                | Scroll to start       |
@@ -34,9 +36,7 @@ Multiple Scenes
 
 Scene displays are stacked left to right. Use the keyboard controls to scroll.
 
-The plugin doesn't render in hidden scenes. If you have stopped scenes that you never need to use again, you could remove them to make space.
-
-The plugin renders with the scene it belongs to, so content in scenes on top may cover content in scenes below.
+If you have stopped scenes that you never need to use again, you could remove them to make space.
 
 Install
 -------
@@ -47,7 +47,7 @@ Install
 
 ```js
 // In preload():
-this.load.scenePlugin('DisplayListWatcher', 'https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.1.0')
+this.load.scenePlugin('DisplayListWatcher', 'https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.2.0')
 ```
 
 ### Module
@@ -60,8 +60,7 @@ new Phaser.Game({
     scene: [
       {
         key: 'DisplayListWatcher',
-        plugin: DisplayListWatcher,
-        start: true
+        plugin: DisplayListWatcher
       }
     ]
   }
@@ -74,7 +73,7 @@ new Phaser.Game({
 
 ```html
 <!-- after phaser.js -->
-<script src="https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.1.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/phaser-plugin-display-list-watcher@1.2.0"></script>
 ```
 
 ```js
@@ -85,8 +84,7 @@ new Phaser.Game({
     scene: [
       {
         key: 'DisplayListWatcher',
-        plugin: DisplayListWatcher,
-        start: true
+        plugin: DisplayListWatcher
       }
     ]
   }
