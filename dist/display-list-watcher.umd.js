@@ -202,6 +202,9 @@
       this.camera.setBounds(0, 0, POSITIVE_INFINITY, this.text.height);
       this.camera.preRender();
       this.renderText(renderer, this.text, this.camera);
+      if (renderer.type === Phaser.WEBGL) {
+        renderer.flush();
+      }
     }
     destroy() {
       this.stop();
