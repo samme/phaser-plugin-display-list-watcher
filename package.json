@@ -38,8 +38,8 @@
     "chai": "^5.1.2",
     "mocha": "^11.0.1",
     "phaser": "3.88.2",
-    "vite": "^6.0.2",
-    "vitest": "^3.0.7"
+    "vite": "^8.0.16",
+    "vitest": "^4.1.8"
   },
   "peerDependencies": {
     "phaser": "^3.60.0"
